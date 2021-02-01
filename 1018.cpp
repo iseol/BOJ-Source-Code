@@ -44,7 +44,7 @@ int BlackCnt(int y, int x) {
 }
 
 int main(void) {
-	int n, m; // 세로, 가로 
+	int n, m; 
 	cin >> n >> m;
     for (int i = 0; i < n; i++) cin >> chess[i];
 
