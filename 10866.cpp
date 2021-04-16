@@ -16,7 +16,7 @@ int main(void) {
 	cin >> n;
 	for (int i = 0; i < n; i++) {
 		cin >> command;
-		
+
 		if (!strcmp(command, "push_front")) {
 			cin >> temp;
 			dq.push_front(temp);

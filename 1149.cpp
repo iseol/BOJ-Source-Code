@@ -6,7 +6,7 @@ int d[1001][3];
 int main(void) {
 	int n;
 	cin >> n;
-	
+
 	int r, g, b;
 	for (int i = 1; i <= n; i++) {
 		cin >> r >> g >> b;
