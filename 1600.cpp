@@ -1,54 +1,69 @@
 #include <iostream>
-#include <algorithm>
+#include <tuple>
 #include <queue>
-#define X first
-#define Y second
 using namespace std;
 
-int board[200][200];
-int dist[200][200];
-int karr[200][200];
+int board[202][202];
+int dist[31][202][202];
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {1, 0, -1, 0};
+int kdx[8] = {-2, -1, 1, 2, 2, 1, -1, -2};
+int kdy[8] = {1, 2, 2, 1, -1, -2, -2, -1};
 
-int dx[12] = {-2, 1, -1, -2, -2, -1, 1, 2, 0, 1, 0, -1};
-int dy[12] = {1, 2, 2, 1, -1, -2, -2, -1, 1, 0, -1, 0};
+int main(void) {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
 
-int main() {
-	int k;
-	int w, h;
+	int k, w, h;
 	cin >> k;
 	cin >> w >> h;
-	for (int i = 0; i < h; i++) {
-		fill(dist[i], dist[i]+w, -1);
-		fill(karr[i], karr[i]+w, -1);
-	} 
-	
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++) {
 			cin >> board[i][j];
 		}
 	}
-	
-	queue<pair<int, int> > q;
-	q.push({0, 0});
-	dist[0][0] = 0;
-	karr[0][0] = k;
-	
-	while (!q.empty()) {
-		auto cur = q.front(); q.pop();
-		for (int dir = 0; dir < 12; dir++) {
-			int nx = cur.X + dx[dir];
-			int ny = cur.Y + dy[dir];
-			if ((dir <= 7 && karr[cur.X][cur.Y] != 0) || (dir > 7)) {
-				if (nx < 0 || nx >= h || ny < 0 || ny >= w) continue;
-				if (dist[nx][ny] != -1 || board[nx][ny] == 1) continue;
-				dist[nx][ny] = dist[cur.X][cur.Y] + 1;
-				if (dir <= 7) karr[nx][ny] = karr[cur.X][cur.Y] - 1;
-				else karr[nx][ny] = karr[cur.X][cur.Y];
-				
-				q.push({nx, ny});
-			} 
+	for (int i = 0; i <= k; i++) {
+		for (int j = 0; j < h; j++) {
+			for (int k = 0; k < w; k++) {
+				dist[i][j][k] = -1;
+			}
 		}
 	}
-	
-	cout << dist[h-1][w-1];
+
+
+	queue<tuple<int, int, int> > q;
+	dist[k][0][0] = 0;
+	q.push({k, 0, 0});
+	while (!q.empty()) {
+		int jumps, x, y;
+		tie(jumps, x, y) = q.front();
+		q.pop();
+		for (int dir = 0; dir < 4; dir++) {
+			int nx = x + dx[dir];
+			int ny = y + dy[dir];
+			if (nx < 0 || nx >= h || ny < 0 || ny >= w) continue;
+			if (dist[jumps][nx][ny] != -1 || board[nx][ny] == 1) continue;
+			dist[jumps][nx][ny] = dist[jumps][x][y] + 1;
+			q.push({jumps, nx, ny});
+		}
+		for (int dir = 0; dir < 8; dir++) {
+			int nx = x + kdx[dir];
+			int ny = y + kdy[dir];
+			if (nx < 0 || nx >= h || ny < 0 || ny >= w) continue;
+			if (jumps > 0) {
+				if (dist[jumps-1][nx][ny] == -1 && board[nx][ny] == 0) {
+					dist[jumps-1][nx][ny] = dist[jumps][x][y] + 1;
+					q.push({jumps-1, nx, ny});
+				}
+			}
+		}
+	}
+	int res = 40004;
+	for (int i = 0; i <= k; i++) {
+		if (dist[i][h-1][w-1] != -1) {
+			res = min(dist[i][h-1][w-1], res);
+		}
+	}
+	if (res == 40004) cout << -1;
+	else cout << res;
 }
