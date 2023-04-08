@@ -24,8 +24,7 @@ int main(void) {
 	}
 	
 	int ans = -1;
-	for (int i = 1; i <= n; i++)
-		ans = max(ans, d[n][i]);
+	for (int i = 1; i <= n; i++) ans = max(ans, d[n][i]);
 	
-	cout << ans << '\n';
+	cout << ans;
 }

@@ -1,9 +1,13 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 int d[1001][3];
 
-int main(void) {
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(nullptr);
+
 	int n;
 	cin >> n;
 
@@ -14,6 +18,6 @@ int main(void) {
 		d[i][1] = min(d[i-1][0], d[i-1][2]) + g;
 		d[i][2] = min(d[i-1][0], d[i-1][1]) + b;
 	}
-	int ans = (d[n][0] < d[n][1]) ? (d[n][0] < d[n][2] ? d[n][0] : d[n][2]) : (d[n][1] < d[n][2] ? d[n][1] : d[n][2]);
-	cout << ans << '\n';
+	int ans = min({d[n][0], d[n][1], d[n][2]});
+	cout << ans;
 }

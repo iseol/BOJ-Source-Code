@@ -2,34 +2,43 @@
 #define MAX 1000000
 using namespace std;
 
+typedef long long ll;
+
 int prime[MAX];
 int pn;
-bool check[MAX+1];
+bool isprime[MAX+1];
 
 int main(void) {
 	ios_base::sync_with_stdio(false);
 	cin.tie(nullptr);
 	
-	for (int i = 2; i <= MAX; i++) {
-		if (check[i] == false) {
-			prime[pn++] = i; // ÀÎµ¦½º 0ºÎÅÍ °ªÀÌ ´ã°ÜÁü 
-			for (int j = i+i; j <= MAX; j += i) // iÀÇ ¹è¼ö ¸ðµÎ »èÁ¦ 
-				check[j] = true;
+	fill(isprime+2, isprime+MAX, true);
+
+	for (ll i = 2; i <= MAX; i++) {
+		if (isprime[i]) {
+			prime[pn++] = i; // ì¸ë±ìŠ¤ 0ë¶€í„° ê°’ì´ ë‹´ê²¨ì§
+			for (ll j = i*i; j <= MAX; j += i) // iì˜ ë°°ìˆ˜ ëª¨ë‘ ì‚­ì œ 
+				isprime[j] = false;
 		}
 	}
 	
-	int n, t = 0;
+	int n;
+	int tc;
 	int res = 0;
-	cin >> t;
-	while (t--) { 
+
+	cin >> tc;
+	while (tc--) { 
 		cin >> n;
+
 		if (n == 0) break;
+
 		for (int i = 0; i < pn; i++) {
 			if (n - prime[i] >= 2 && prime[i] <= n - prime[i]) {
-				if (!check[n - prime[i]]) res++;
+				if (isprime[n - prime[i]]) res++;
 			}
 			else break;
 		}
+
 		cout << res << '\n';
 		res = 0;
 	}

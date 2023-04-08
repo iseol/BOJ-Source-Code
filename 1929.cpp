@@ -1,6 +1,8 @@
 #include <iostream>
-#include <vector>
 using namespace std;
+
+typedef long long ll;
+bool isprime[1000005];
 
 int main() {
 	ios::sync_with_stdio(false);
@@ -8,12 +10,12 @@ int main() {
 	
 	int n, m;
 	cin >> m >> n;
-	
-	vector<bool> isprime(n+1, true);
-	isprime[1] = false; 
-	for (int i = 2; i <= n; i++) {
+
+	fill(isprime, isprime+n+1, true);
+	isprime[1] = false; // erathos
+	for (ll i = 2; i <= n; i++) {
 		if (isprime[i]) {
-			for (long long j = (long long)i*(long long)i; j <= n; j += i) isprime[j] = false;
+			for (ll j = i*i; j <= n; j += i) isprime[j] = false;
 		}
 	}
 	
